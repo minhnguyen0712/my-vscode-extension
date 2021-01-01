@@ -11,7 +11,8 @@
 	],
 	"activationEvents": [
 		"onCommand:visualtodo.helloWorld",
-		"onCommand:visualtodo.askQuestion"
+		"onCommand:visualtodo.askQuestion",
+		"onCommand:visualtodo.openSession"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -24,7 +25,12 @@
 				"command": "visualtodo.askQuestion",
 				"category": "visualtodo",
 				"title": "Ask a question"
-			}
+			},
+			{
+        "command": "visualtodo.openSession",
+        "title": "Start new webview session",
+        "category": "visualtodo"
+      }
 		]
 	},
 	"scripts": {
