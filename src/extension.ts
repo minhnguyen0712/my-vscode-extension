@@ -1,26 +1,47 @@
 import * as vscode from "vscode";
+import { helloWorld, askQuestion } from "./commands";
+
+const cats = {
+  "Coding Cat": "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+  "Compiling Cat": "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+};
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Congratulations, your extension "visualtodo" is now active!');
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("visualtodo.helloWorld", () => {
-      vscode.window.showInformationMessage("Hello World from VisualTodo!!!");
-    })
+    vscode.commands.registerCommand("visualtodo.helloWorld", helloWorld)
   );
 
-  vscode.commands.registerCommand("visualtodo.askQuestion", async () => {
-    const answer = await vscode.window.showInformationMessage(
-      "How was your day",
-      "good",
-      "bad"
+  context.subscriptions.push(
+    vscode.commands.registerCommand("visualtodo.askQuestion", askQuestion)
+  );
+
+  vscode.commands.registerCommand("visualtodo.openSession", () => {
+    const panel = vscode.window.createWebviewPanel(
+      "openSession",
+      "Webview Panel",
+      vscode.ViewColumn.One,
+      {}
     );
-    if (answer === "bad") {
-      vscode.window.showInformationMessage("Sorry to hear!! Cheer up!!");
-    } else if (answer === "good") {
-      vscode.window.showInformationMessage("Keep up the spirits!!");
-    }
+
+    panel.webview.html = getWebviewContent("Coding Cat");
   });
+}
+
+function getWebviewContent(cat: keyof typeof cats) {
+  return `
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webview panel</title>
+</head>
+<body>
+    <img src="${cats[cat]}" width="300" />
+</body>
+</html>`;
 }
 
 // this method is called when your extension is deactivated
